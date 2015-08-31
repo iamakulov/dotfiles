@@ -1,0 +1,15 @@
+[gui]
+	fontdiff = -family \"PT Mono\" -size 9 -weight normal -slant roman -underline 0 -overstrike 0
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	ul = reset --mixed HEAD^
+	last = log -1 HEAD
+[push]
+	default = simple
+	followTags = true
+[user]
+	name = Ivan Akulov
+	email = gxoptg@gmail.com
