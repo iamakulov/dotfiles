@@ -1,8 +1,15 @@
 # The script is untested yet and should be tested in the wild
 
 ## Functions
+function Get-IsRunningElevated() {
+    $windowsPrincipal = [Security.Principal.WindowsPrincipal]([Security.Principal.WindowsIdentity]::GetCurrent())
+    $administratorRole = [Security.Principal.WindowsBuiltInRole]::Administrator
+
+    Return $windowsPrincipal.IsInRole($administratorRole)
+}
+
 function Add-ConsoleFont($Font) {
-    Start-Process powershell -Verb runAs -ArgumentList "New-ItemProperty -Name 000 -Value '$Font' -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont'"
+    New-ItemProperty -Name 000 -Value "$Font" -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Console\TrueTypeFont"
 }
 
 function Init-Chocolatey() {
@@ -15,8 +22,15 @@ function Init-Scoop() {
 }
 
 function Init-PowerShell() {
+    # Restart the script in elevated console if necessary
+    if (-Not (Get-IsRunningElevated)) {
+        Read-Host -Prompt "Press Enter to relaunch the script in elevated invironment"
+        Start-Process powershell -Verb runAs -ArgumentList "$PSCommandPath; Pause"
+        Return
+    }
+
     # Update execution policy to let modules run
-    Start-Process powershell -Verb runAs -ArgumentList "Set-ExecutionPolicy RemoteSigned"
+    Set-ExecutionPolicy RemoteSigned
 
     # Init the profile
     Copy-Item .\powershell\Microsoft.PowerShell_profile.ps1 $profile -Force
