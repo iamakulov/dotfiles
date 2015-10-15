@@ -7,7 +7,10 @@
 	st = status
 	ul = reset --mixed HEAD^
 	last = log -1 HEAD
+	purr = !git fetch && git rebase
 	g = gui
+	k = !gitk --all
+	kk = !gitk
 [push]
 	default = simple
 	followTags = true
