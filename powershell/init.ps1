@@ -13,8 +13,7 @@ function Add-ConsoleFont($Font) {
 }
 
 function Init-Chocolatey() {
-    Get-PackageProvider -name Chocolatey -ForceBootstrap
-    Set-PackageSource -Name chocolatey -Trusted
+    Invoke-Expression (New-Object NET.WebClient).DownloadString('https://chocolatey.org/install.ps1')
 }
 
 function Init-Scoop() {
