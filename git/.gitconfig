@@ -22,3 +22,5 @@
 	autoStash = true
 [core]
 	autocrlf = true
+[help]
+	autocorrect = 3
